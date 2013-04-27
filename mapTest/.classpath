@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="F:/文件/课件/2013-2014上/课外/项目/jdom.jar"/>
+	<classpathentry kind="lib" path="F:/文件/课件/2013-2014上/课外/项目/json-20080701-javadoc.jar"/>
+	<classpathentry kind="lib" path="F:/文件/课件/2013-2014上/课外/项目/org.json.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
