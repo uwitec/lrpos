@@ -1,17 +1,18 @@
+package kernel;
 
-public class ATSP_DP {
-	private static final int N = 20;			            //地点个数上限
+
+public class ATSP_DP extends ATSP{
+	private static final int N = 20;                        //地点个数上限
 	private static final int S = (1 << N);		            //状态数
-	private static final double INF = 99999999.0;             //最大长度
+	private double[][] f;                                   //状态方程f[i][s]代表从地点i经过状态s中的各个地点后回到起点(编号0)的最短路径 
+	private int[][] path;                                   //记录最佳路径 
 	
-	private int n;								            //地点个数
-	private double[][] d = new double[N][N];			    //各地点最短距离矩阵
-	private double bestCircuitLen;                          //最优哈密尔顿回路距离 
-	private int[] bestCircuit = new int[N];                 //最优哈密尔顿回路方案 
-	private double bestPathLen;                             //最优哈密尔顿路径距离
-	private int[] bestPath = new int[N];                    //最优哈密尔顿路径方案
-	private double[][] f = new double[N][S];                //状态方程f[i][s]代表从地点i经过状态s中的各个地点后回到起点(编号0)的最短路径 
-	private int[][] path = new int[N][S];                   //记录最佳路径 
+	@Override
+	protected void kernel() {
+		// TODO Auto-generated method stub
+		DP();
+	}
+	
 	/*
 	记忆化搜索 
 	*/
@@ -46,16 +47,15 @@ public class ATSP_DP {
 	           
 	       return f[cur][status];
 	}
+	
 	/* 
 	动态规划 
 	n：地点个数，包括起始位置
 	d[0..n-1][0..n-1]：各地点最短距离矩阵，第一个为起始位置 
 	*/
-	public void DP(int _n, double[][] _d){
-		n = _n;
-		 for (int i = 0;i < n;i++)
-			 for (int j = 0;j < n;j++)
-				 d[i][j] = _d[i][j];
+	private void DP(){
+		 f = new double[n][1<<n];
+		 path = new int[n][1<<n];		
 	     //初始化f[][] 
 	     for (int i = 0;i < n;i++)
 	         for (int j = 0;j < (1<<n);j++)
@@ -79,7 +79,7 @@ public class ATSP_DP {
 	     int cur = bestSc;
 	     int status = (1<<n) - 1;
 	     int i = 1;
-	     while (i < n){
+	     while (i < n - 1){
 	           int next = path[cur][status];
 	           if (next != cur){
 	              i++;
@@ -106,32 +106,5 @@ public class ATSP_DP {
 	     }
 	     bestPath[n - 1] = 0;
 	}
-	
-	/*
-	 * 获取最优哈密尔顿回路距离 
-	 */
-	public double getBestCircuitLen(){
-		return bestCircuitLen;
-	}
-	
-	/*
-	 * 获取最优哈密尔顿回路方案 
-	 */
-	public int[] getBestCircuit(){
-		return bestCircuit;
-	}
-	
-	/*
-	 * 获取最优哈密尔顿路径距离
-	 */
-	public double getBestPathLen(){
-		return bestPathLen;
-	}
-	
-	/*
-	 * 获取最优哈密尔顿路径方案
-	 */
-	public int[] getBestPath(){
-		return bestPath;
-	}
+
 }

@@ -1,3 +1,5 @@
+package googlemap;
+import main.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,16 +13,16 @@ import org.json.JSONObject;
 
 
 public class GetDistanceThread extends Thread{
-	double[][] orig;
-	double[][] dest;
+	MyPoint[] orig;
+	MyPoint[] dest;
 	int o1;
 	int o2;
 	int d1;
 	int d2;
 	double[][] dist;
 	int n;
-	double INF=999999999.0;//Á½µã²»¿É´ï¾àÀë
-	GetDistanceThread(double[][] _orig,double[][] _dest,int _o1,int _o2,int _d1,int _d2,int _n) {
+	double INF=999999999.0;//ï¿½ï¿½ï¿½ã²»ï¿½É´ï¿½ï¿½ï¿½ï¿½
+	GetDistanceThread(MyPoint[] _orig,MyPoint[] _dest,int _o1,int _o2,int _d1,int _d2,int _n) {
 		// TODO Auto-generated constructor stub
 		orig=_orig;
 		dest=_dest;
@@ -38,13 +40,15 @@ public class GetDistanceThread extends Thread{
 		try{
 			URL url = new URL(strUrl);
 			URLConnection conn = url.openConnection();
+			if(conn==null)
+				return null;
 			BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			String line = null;
 		    while ((line = reader.readLine()) != null){
 		    	document.append(line + "\n");
 		    }
 		    reader.close();
-		    strJson= document.toString();//·µ»ØÖµ
+		    strJson= document.toString();//ï¿½ï¿½ï¿½ï¿½Öµ
 		    json=new JSONObject(strJson);
 		}catch(MalformedURLException e) {
 			e.printStackTrace(); 
@@ -57,20 +61,20 @@ public class GetDistanceThread extends Thread{
 	public void run(){
 		String strUrl="http://maps.googleapis.com/maps/api/distancematrix/json?";
 		strUrl+="origins=";
-		for(int i=o1;i<o2;i++){//Æðµã
-			strUrl+=orig[i][0]+","+orig[i][1];
+		for(int i=o1;i<o2;i++){//ï¿½ï¿½ï¿½
+			strUrl+=orig[i].getpointX()+","+orig[i].getpointY();
 			if(i!=o2-o1-1)
 				strUrl+="|";
 		}
 		strUrl+="&destinations=";
-		for(int i=d1;i<d2;i++){//ÖÕµã
-			strUrl+=dest[i][0]+","+dest[i][1];
+		for(int i=d1;i<d2;i++){//ï¿½Õµï¿½
+			strUrl+=dest[i].getpointX()+","+dest[i].getpointY();
 			if(i!=d2-d1-1)
 				strUrl+="|";
 		}
 		strUrl+="&mode=driving&language=chinese&sensor=false";
 		System.out.print(strUrl+"\n");
-		//»ñÈ¡¾àÀë
+		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
 		JSONObject json;
 		int threadCount=0;
 		while(true){
@@ -79,6 +83,8 @@ public class GetDistanceThread extends Thread{
 			threadCount++;
 			try {
 				json = getJson(strUrl);
+				if(json==null)
+					break;
 				System.out.print(json.getString("status")+"\n");
 				if(json.getString("status").equalsIgnoreCase("OK")){
 					JSONArray rows=json.getJSONArray("rows");

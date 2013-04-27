@@ -1,9 +1,9 @@
-import java.math.*;
-import java.awt.geom.QuadCurve2D.Double;
+package googlemap;
+import main.*;
+import kernel.*;
+import kernel.ATSP_DP;
+
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
@@ -22,15 +22,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xml.sax.InputSource;
-//¼ÆËã³ÇÊÐ¼äµÄ¾àÀë
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½Ä¾ï¿½ï¿½ï¿½
 public class Distance extends Thread{
 	int n;
 	int count;
 	//private Point[] pt;
-	private double[][] pt;//±£´æµØµã×ø±ê
-	private double[][] dist; //ÈÎÒâÁ½µã¼äµÄ¾àÀë
-	private double INF=999999999.0;//Á½µã²»¿É´ï¾àÀë
-	Distance(double[][] p){
+	private MyPoint[] pt;//ï¿½ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½
+	private double[][] dist; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¾ï¿½ï¿½ï¿½
+	private double INF=999999999.0;//ï¿½ï¿½ï¿½ã²»ï¿½É´ï¿½ï¿½ï¿½ï¿½
+	Distance(MyPoint[] p){
 		pt=p;
 		n=p.length;
 		dist=new double[n][n];
@@ -49,7 +49,7 @@ public class Distance extends Thread{
 		    	document.append(line + "\n");
 		    }
 		    reader.close();
-		    strJson= document.toString();//·µ»ØÖµ
+		    strJson= document.toString();//ï¿½ï¿½ï¿½ï¿½Öµ
 		    json=new JSONObject(strJson);
 		}catch(MalformedURLException e) {
 			e.printStackTrace(); 
@@ -60,23 +60,23 @@ public class Distance extends Thread{
 		return json;
 	}
 
-	private void getDistFromGoogle(double[][] orig,double[][] dest,int o1,int o2,int d1,int d2) throws JSONException{//ÆðµãÎªo1-o2 //ÖÕµãÎªd1-d2
+	private void getDistFromGoogle(MyPoint[] orig,MyPoint[] dest,int o1,int o2,int d1,int d2) throws JSONException{//ï¿½ï¿½ï¿½Îªo1-o2 //ï¿½Õµï¿½Îªd1-d2
 		String strUrl="http://maps.googleapis.com/maps/api/distancematrix/json?";
 		strUrl+="origins=";
-		for(int i=o1;i<o2;i++){//Æðµã
-			strUrl+=orig[i][0]+","+orig[i][1];
+		for(int i=o1;i<o2;i++){//ï¿½ï¿½ï¿½
+			strUrl+=orig[i].getpointX()+","+orig[i].getpointY();
 			if(i!=o2-o1-1)
 				strUrl+="|";
 		}
 		strUrl+="&destinations=";
-		for(int i=d1;i<d2;i++){//ÖÕµã
-			strUrl+=dest[i][0]+","+dest[i][1];
+		for(int i=d1;i<d2;i++){//ï¿½Õµï¿½
+			strUrl+=dest[i].getpointX()+","+dest[i].getpointY();
 			if(i!=d2-d1-1)
 				strUrl+="|";
 		}
 		strUrl+="&mode=driving&language=chinese&sensor=false";
 		System.out.print(strUrl+"\n");
-		//»ñÈ¡¾àÀë
+		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
 		JSONObject json=getJson(strUrl);
 		System.out.print(json.getString("status"));
 		if(!json.getString("status").equalsIgnoreCase("OK")){
@@ -100,8 +100,8 @@ public class Distance extends Thread{
 			}
 		}
 	}
-	//¼ÆËãÈÎÒâÁ½µã¼äµÄ¾àÀë£¬·µ»Ø¾àÀë¾ØÕó
-	public void getdist() throws JSONException, InterruptedException{//Ò»´Î¼ÆËã¸öÊý Æðµã*ÖÕµã¡¶100
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¾ï¿½ï¿½ë£¬ï¿½ï¿½ï¿½Ø¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	public void getdist() throws JSONException, InterruptedException{//Ò»ï¿½Î¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½*ï¿½Õµã¡¶100
 		List<Thread> threadls=new ArrayList<Thread>();
 		List<GetDistanceThread> distancels=new ArrayList<GetDistanceThread>();
 		if(n>10){
@@ -117,23 +117,21 @@ public class Distance extends Thread{
 						mm=5;
 					else
 						mm=n-j;
-					//¿ªÆôÏß³Ì»ñÈ¡¾àÀë
+					//ï¿½ï¿½ï¿½ï¿½ï¿½ß³Ì»ï¿½È¡ï¿½ï¿½ï¿½ï¿½
 					GetDistanceThread distanceThread=new GetDistanceThread(pt, pt, i, i+m, j, j+mm, n);
 					Thread thread=new Thread(distanceThread);
 					thread.start();
 					//thread.join();
 					threadls.add(thread);
 					distancels.add(distanceThread);
-
-					//getDistFromGoogle(pt,pt,i,i+m,j,j+mm);
 				}
 			}
 			Iterator<Thread> it;
 			Iterator<GetDistanceThread> it2;
 			for(it = threadls.iterator(),it2=distancels.iterator();it.hasNext();)
             {
-                 it.next().join();
-                 double[][] d=it2.next().getDist();
+                 ((Thread)it.next()).join();
+                 double[][] d=((GetDistanceThread)it2.next()).getDist();
                  for(int i=0;i<n;i++){
                 	 for(int j=0;j<n;j++){
                 		 if(dist[i][j]==0&&dist[i][j]!=d[i][j]){
@@ -148,7 +146,7 @@ public class Distance extends Thread{
 		}
 		//return dist;
 	}
-	public double[][] getBestTour() throws JSONException, InterruptedException{
+	public MyPoint[] getBestTour() throws JSONException, InterruptedException{
 		int[] bestTour=new int[n];
 		getdist();
 		
@@ -158,22 +156,23 @@ public class Distance extends Thread{
 				System.out.print(dist[i][j]+"  ");
 			}
 			System.out.print("\n");
-		}
-		ATSP_DP atspdp=new ATSP_DP();
-		atspdp.DP(n, dist);
-		bestTour=atspdp.getBestCircuit();
+		} 
+		ATSP dp = new ATSP_DP();
+		dp.run(n, dist, 0);
+		bestTour=dp.getBestCircuit();
+		System.out.println("******"+dp.getBestCircuitLen()+"*******");
 		System.out.print("bestTour:\n");
 		for(int i=0;i<n;i++)
 			System.out.print(bestTour[i]+"  ");
 		System.out.print("\n");
-		double[][] point=new double[n][n];
+		//double[][] point=new double[n][n];
+		MyPoint[] point=new MyPoint[n];
 		System.out.print("bestTour Point:\n");
 		for(int i=0;i<n;i++){
-			point[i][0]=pt[bestTour[i]][0];
-			point[i][1]=pt[bestTour[i]][1];
+			point[i]=pt[bestTour[i]];
 			if(i!=0&&i%3==0)
 				System.out.print("\n");
-		System.out.print(point[i][0]+","+point[i][1]+"  ");
+		System.out.print(point[i].getpointX()+","+point[i].getpointY()+"  ");
 		}
 		System.out.print("\n");
 		return point;

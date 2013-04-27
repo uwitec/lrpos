@@ -1,3 +1,6 @@
+package main;
+import googlemap.*;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONException;
@@ -14,19 +17,19 @@ public class test {
 	 */
 	public static void main(String[] args) throws JSONException, InterruptedException {
 		// TODO Auto-generated method stub
-		Route test=new Route();
-		 List<Route.point> list=new ArrayList<Route.point>();
+		BestRoute test=new BestRoute();
+		 List<MyPoint> list=new ArrayList<MyPoint>();
 		 
-		 double pt[][]=new double[15][2];
-		pt[0][0]=26.074508;//¸£ÖÝ
+		double pt[][]=new double[15][2];
+		pt[0][0]=26.074508;//ï¿½ï¿½ï¿½ï¿½
 		pt[0][1]=119.29649399999994;
-		pt[1][0]=24.479834;//ÏÃÃÅ
+		pt[1][0]=24.479834;//ï¿½ï¿½ï¿½ï¿½
 		pt[1][1]=118.089425;
-		pt[2][0]=31.230393;//ÉÏº£
+		pt[2][0]=31.230393;//ï¿½Ïºï¿½
 		pt[2][1]=121.473704;
-		pt[3][0]=39.90403;//±±¾©
+		pt[3][0]=39.90403;//ï¿½ï¿½ï¿½ï¿½
 		pt[3][1]=116.40752599999996;
-		pt[4][0]=23.132191;//¹ã¶«
+		pt[4][0]=23.132191;//ï¿½ã¶«
 		pt[4][1]=113.26653099999999;
 		pt[5][0]=30.267447;
 		pt[5][1]=120.15279199999998;
@@ -50,12 +53,11 @@ public class test {
 		pt[14][1]=108.32754599999998;
         for(int i=0;i<15;i++)
         {
-   		 Route.point a=new Route.point();
-   		 a.setpoint(pt[i][0],pt[i][1]);
-   		 list.add(a); 
+        	MyPoint a=new MyPoint();
+   		 	a.setpoint(pt[i][0],pt[i][1]);
+   		 	list.add(a); 
         }
 		test.print_point(list);
-		
 	}
 
 }

@@ -1,3 +1,5 @@
+package googlemap;
+import main.*;
 import java.util.List;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,33 +11,16 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-public class Route {
+public class BestRoute {
 	int n;
 	private double INF=999999999.0;
     String point1;
     String point2;
-	public static  final class point{
-		private double point_x;
-		private double point_y;
-		public point(){}
-		void setpoint(double x,double y)
-		{
-			point_x=x;
-			point_y=y;
-		}
-		double getpoint_x(){
-			
-			return point_x;
-		}
-		double getpoint_y(){
-			
-			return point_y;
-		}
-	}
-	private List< point> list=new ArrayList< point>();
-	private point mypoint;
-	Route(){}
-	//通过http获取两点间的驾车信息
+    double sum=0;
+	private List< MyPoint> list=new ArrayList< MyPoint>();
+	private MyPoint mypoint;
+	public BestRoute(){}
+	//脥拧鹿媒http禄帽脠隆脕艙碌茫艗盲碌脛艗脻鲁碌脨脜脧垄
 
 	private String searchRouteOfTwoPoint(String point_start,String point_end){
 		String strUrl="http://maps.googleapis.com/maps/api/directions/json?origin="+point_start+"&destination="+point_end+"&sensor=true";
@@ -61,43 +46,16 @@ public class Route {
 		}catch(IOException e){
 		    e.printStackTrace(); 
 		}
-		String strJson = document.toString();//返回值
+		String strJson = document.toString();//路碌禄脴脰碌
 		return strJson;
 	}
-	//通过返回的json数据得到两点间的距离
-	/*
-	private double getDistOfTwoPointFromJson(String strJson){
-		double distance=INF;
-		JSONObject json;
-		try{
+		private void getPathOfTwoPointFromJson(String strJson){
 			
-			json=new JSONObject(strJson);
-			if(json.getString("status").equals("NOT_FOUND")){//无法直接搜索到两点间的驾车信息
-			
-				distance=INF;
-				
-			}
-			else{
-
-				JSONObject results=json.getJSONArray("routes").getJSONObject(0);
-				JSONObject result=results.getJSONArray("legs").getJSONObject(0);
-				distance=result.getJSONObject("distance").getDouble("value");
-			}
-		}catch(JSONException e){
-			e.printStackTrace();
-		}
-		return distance;
-	}*/
-	//通过返回的json数据得到两点间的路线信息
-	private void getPathOfTwoPointFromJson(String strJson){
-
 		JSONObject json;
 		try{
 			json=new JSONObject(strJson);
-			if(json.getString("status").equals("NOT_FOUND")){//无法直接搜索到两点间的驾车信息
-				
+			if(json.getString("status").equals("NOT_FOUND")){//脦脼路拧脰卤艙脫脣脩脣梅碌艙脕艙碌茫艗盲碌脛艗脻鲁碌脨脜脧垄		
 			}
-
 			else{
 				if(json.getString("status").equals("OVER_QUERY_LIMIT"))
 				{
@@ -111,81 +69,74 @@ public class Route {
 			      for(int tem=0;tem<i;tem++)
 			      {
 			    	JSONObject position=key.getJSONObject(tem);
-			    	mypoint=new point();
+			    	mypoint=new MyPoint();
 			        mypoint.setpoint(position.getJSONObject("start_location").getDouble("lat"),position.getJSONObject("start_location").getDouble("lng"));
 			    	list.add(mypoint);
+			    	sum+=position.getJSONObject("distance").getDouble("value");
 			    	if(tem==i-1)
 			    	{
-			    		mypoint=new point();
+			    		mypoint=new MyPoint();
 			    		mypoint.setpoint(position.getJSONObject("end_location").getDouble("lat"),position.getJSONObject("end_location").getDouble("lng"));
-			    		list.add(mypoint);
-			    		
-			    		
+			    		list.add(mypoint);		
 			    	}
-			    	
 			      }
-			      }
+			     
+			   }
 			}
 		}catch(JSONException e){
 			e.printStackTrace();
 		}
 	}
-	private void Best_tour(double [][] ds)
+	private void Best_tour(MyPoint[] ds)
 	{
       int i=  ds.length;
       String x;
       String y;
       for(int temp=0;temp<i-1;temp++){
-   	 x=Double.toString(ds[temp][0]);
-   	 y=Double.toString(ds[temp][1]);
-   	 point1=x+","+y;
-   	 x=Double.toString(ds[temp+1][0]);
-     y=Double.toString(ds[temp+1][1]);
-   	 point2=x+","+y;
-   	getPathOfTwoPointFromJson(searchRouteOfTwoPoint(point1,point2));
-   	if(temp==i-2)
-   	{
-   		x=Double.toString(ds[i-1][0]);
-        y=Double.toString(ds[i-1][1]);
-      	 point1=x+","+y;
-      	 x=Double.toString(ds[0][0]);
-       	 y=Double.toString(ds[0][1]);
-       	 point2=x+","+y;
-      	getPathOfTwoPointFromJson(searchRouteOfTwoPoint(point1,point2));
-   		
-   	}
-   		
+    	  x=Double.toString(ds[temp].getpointX());
+    	  y=Double.toString(ds[temp].getpointY());
+    	  point1=x+","+y;
+    	  x=Double.toString(ds[temp+1].getpointX());
+    	  y=Double.toString(ds[temp+1].getpointY());
+    	  point2=x+","+y;
+    	  getPathOfTwoPointFromJson(searchRouteOfTwoPoint(point1,point2));
+		   	if(temp==i-2)
+		   	{
+		   		x=Double.toString(ds[i-1].getpointX());
+		        y=Double.toString(ds[i-1].getpointY());
+		      	 point1=x+","+y;
+		      	 x=Double.toString(ds[0].getpointX());
+		       	 y=Double.toString(ds[0].getpointY());
+		       	 point2=x+","+y;
+		      	getPathOfTwoPointFromJson(searchRouteOfTwoPoint(point1,point2));   		
+		   	}
       }
-		
+     
 	}
-public List< point> print_point(List< point> a) throws JSONException   //得到最短路径的点
+public List< MyPoint> print_point(List< MyPoint> a) throws JSONException   //碌脙碌艙脳卯露脤脗路鸥露碌脛碌茫
 , InterruptedException
 	{
-	double[][] ds=new double[a.size()][2];
+	MyPoint[] ds=new MyPoint[a.size()];
+	//double[][] ds=new double[a.size()][2];
 	for(int i=0;i<a.size();i++)
 	{
 		mypoint=a.get(i);
-		ds[i][0]=mypoint.getpoint_x();
-		ds[i][1]=mypoint.getpoint_y();
-		
+		ds[i]=mypoint;
 	}
 	    Distance dis=new Distance(ds);
 	    Best_tour(dis.getBestTour());
+	    System.out.println("*****"+sum+"****");
 	   // Best_tour(ds);
 		list.size();
-		point mypoint=new point();
+		MyPoint mypoint=new MyPoint();
 		double place[][]=new double[list.size()][2];
 		for(int i=0;i<list.size();i++)
 		{
 			mypoint=list.get(i);
-			place[i][0]=mypoint.getpoint_x();
-			place[i][1]=mypoint.getpoint_y();
-			System.out.print("x："+mypoint.getpoint_x()+"  "+"y: "+mypoint.getpoint_y()+"\n");
-		
+			place[i][0]=mypoint.getpointX();
+			place[i][1]=mypoint.getpointY();
+			//System.out.print("x:"+mypoint.getpointX()+"  "+"y: "+mypoint.getpointY()+"\n");
 		}
-
-      
 	return list;
 }
 }
-
