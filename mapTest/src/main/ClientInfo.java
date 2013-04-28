@@ -8,7 +8,7 @@ import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 public class ClientInfo {
-	MyPoint[] point;//客户地址
+	MyPoint[] point;//瀹㈡埛鍦板潃
 	int numberOfClient;
 	ClientInfo(){
 		point=new MyPoint[0];
@@ -20,7 +20,7 @@ public class ClientInfo {
 	public int getNumberOfClient(){
 		return numberOfClient;
 	}
-	void getFileLines(String filename){//读取txt文件的行数
+	void getFileLines(String filename){//璇诲彇txt鏂囦欢鐨勮鏁�		
 		try{
 			BufferedReader reader=new BufferedReader(new FileReader(filename));
 			int i=0;
@@ -33,10 +33,10 @@ public class ClientInfo {
 			e.printStackTrace();
 		}catch (Exception e) {
 			// TODO: handle exception
-			System.out.print("读取文件出错\n");
+			System.out.print("璇诲彇鏂囦欢鍑洪敊\n");
 		}
 	}
-	public void setClientPointByTxt(String filename){//读取txt文件
+public void setClientPointByTxt(String filename){//璇诲彇txt鏂囦欢
 		getFileLines(filename);
 		try{
 			BufferedReader reader=new BufferedReader(new FileReader(filename));
@@ -60,12 +60,12 @@ public class ClientInfo {
 		}
 		catch (IOException e) {
 			// TODO: handle exception
-			//System.out.print("读取文件内容出错\n");
+			//System.out.print("璇诲彇鏂囦欢鍐呭鍑洪敊\n");
 			e.printStackTrace();
 		}
 		
 	}
-	public void setClientPointByExcel(String filename){//读取excel文件
+	public void setClientPointByExcel(String filename){//璇诲彇excel鏂囦欢
 		Workbook workbook=null;
 		try{
 			workbook=Workbook.getWorkbook(new File(filename));

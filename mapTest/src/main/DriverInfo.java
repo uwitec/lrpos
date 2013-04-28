@@ -1,10 +1,10 @@
 package main;
 
 public class DriverInfo {
-	int taskId;//司机id
+	int taskId;//鍙告満id
 	ClientInfo clientPoint;
-	int numberOfClient;//客户地址数
-	int flag;//是否第一次访问服务器
+	int numberOfClient;//瀹㈡埛鍦板潃鏁�	
+	int flag;//鏄惁绗竴娆¤闂湇鍔″櫒
 	public DriverInfo() {
 		// TODO Auto-generated constructor stub
 		flag=0;
