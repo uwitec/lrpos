@@ -14,7 +14,7 @@ public class testRoute {
 		Service service=new Service(1);
 		service.run();
 		service.getBestRouteFromService(0,2);
-		///asdfasd
+		///as
 	}
 
 }
