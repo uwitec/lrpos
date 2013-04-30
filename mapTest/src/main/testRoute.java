@@ -11,9 +11,9 @@ public class testRoute {
 	 */
 	public static void main(String[] args) throws JSONException, InterruptedException {
 		// TODO Auto-generated method stub
-		Route route=new Route();
-		route.init();
-		route.getRouteByTaskId(0);
+		Service service=new Service(1);
+		service.run();
+		service.getBestRouteFromService(0,2);
 	}
 
 }
