@@ -42,12 +42,15 @@ public class Service {
 	   		a.setpoint(points2[i].getpointX(),points2[i].getpointY());
 	   		list.add(a); 
 	   }
-		List<MyPoint> list2=bestRoute.print_point(list);
-		for(int i=0;i<list2.size()-1;i++){
-			Line line=new Line();
-			line.setLine(list2.get(i), list2.get(i+1));
-			route.lineList.add(line);
-		}
+		//List<MyPoint> list2=bestRoute.print_point(list);
+		route=bestRoute.print_point(list);
+		//bestRoute.tests(list);
+		
+//		for(int i=0;i<list2.size()-1;i++){
+//			Line line=new Line();
+//			line.setLine(list2.get(i), list2.get(i+1));
+//			route.lineList.add(line);
+//		}
 		return route;
 	}
 }

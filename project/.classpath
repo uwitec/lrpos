@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="D:/study/adt-bundle-windows-x86/eclipse/workspace/mapTest/jdom.jar"/>
-	<classpathentry kind="lib" path="D:/study/adt-bundle-windows-x86/eclipse/workspace/mapTest/json-20080701-javadoc.jar"/>
-	<classpathentry kind="lib" path="D:/study/adt-bundle-windows-x86/eclipse/workspace/mapTest/jxl.jar"/>
-	<classpathentry kind="lib" path="D:/study/adt-bundle-windows-x86/eclipse/workspace/mapTest/org.json.jar"/>
+	<classpathentry kind="lib" path="C:/Users/wuhaixuan/Desktop/adt-bundle-windows-x86-20130219/jdom.jar"/>
+	<classpathentry kind="lib" path="C:/Users/wuhaixuan/Desktop/adt-bundle-windows-x86-20130219/org.json.jar"/>
+	<classpathentry kind="lib" path="C:/Users/wuhaixuan/Desktop/adt-bundle-windows-x86-20130219/jxl.jar"/>
+	<classpathentry kind="lib" path="C:/Users/wuhaixuan/Desktop/adt-bundle-windows-x86-20130219/json-20080701-javadoc.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

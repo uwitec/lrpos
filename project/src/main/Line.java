@@ -1,9 +1,9 @@
 package main;
 
 public class Line {
-	MyPoint pointOne;//一条线由两点构成
+	MyPoint pointOne;
 	MyPoint pointTwo;
-	Line(){}
+	public Line(){}
 	
 	public void setLine(MyPoint p1,MyPoint p2){
 		pointOne=p1;
@@ -15,4 +15,5 @@ public class Line {
 	public MyPoint getPointTwo(){
 		return pointTwo;
 	}
+
 }

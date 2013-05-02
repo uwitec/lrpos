@@ -6,7 +6,7 @@ public  class MyPoint{
 	public MyPoint(){	
 	}
 	public void setpoint(double x,double y){
-		System.out.println(x+","+y);
+		//System.out.println(x+","+y);
 		this.pointX=x;
 		this.pointY=y;	
 	}
