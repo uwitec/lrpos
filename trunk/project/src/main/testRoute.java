@@ -13,7 +13,7 @@ public class testRoute {
 		// TODO Auto-generated method stub
 		Service service=new Service(1);
 		service.run();
-		service.getBestRouteFromService(0,2);
+		service.getBestRouteFromService(0,6);
 		///as
 	}
 
