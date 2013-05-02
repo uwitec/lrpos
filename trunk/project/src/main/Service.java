@@ -23,7 +23,7 @@ public class Service {
 			clientInfo.setClientPointByTxt("clientPoint.txt");
 			Route route=new Route();
 			route.setClientInfo(clientInfo);
-			routes.add(route);
+			routes.add(route);////jbh,vnv
 		}
 	}
 	public Route getBestRouteFromService(int taskId,int location) throws JSONException, InterruptedException{
